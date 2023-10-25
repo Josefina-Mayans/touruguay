@@ -1,9 +1,26 @@
+@font-face {
+  font-family: 'BodyFont';
+  src: url('./fonts/PrimeformProDemo-Light.otf') format('truetype');
+}
 
 *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: 'BodyFont', sans-serif;
+}
+
+body {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+h2{
+  font-size: 30px;
+  font-weight: normal;
 }
 
 .navbar {
@@ -18,12 +35,13 @@
 }
 
 .eslogan{
-  color: #017999;
+  color: #f2ebc3;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: normal;
   display: flex;
   margin: 0px 150px;
 }
+
 
 .logo img {
   height: 150px;
@@ -32,13 +50,7 @@
   left: 0;
 }
 
-.eslogan {
-  color: white;
-  display: flex;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0px 150px;
-}
+
 
 .nav-links {
   list-style: none;
@@ -60,25 +72,24 @@
   color: #017999;
 }
 
-body {
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-}
 
 .buscador {
- background-color: #017999;
- display: flex;
- justify-content: flex-end;
- padding: 10px;
+display: flex;
+justify-content: flex-end;
+padding: 10px;
 }
 
 .buscador input {
 border-radius: 50px;
 padding: 10px;
 width: 280px;
+}
+
+.searchIcon{
+  color:#017999;
+  padding: 10px;
+
+
 }
 
 .displayHome{
@@ -102,7 +113,6 @@ height:30vh;
 }
 
 .cat{
-  background-color: #f2ebc3 ;
   display: flex;
   height: 20vh;
   flex-direction: column;
@@ -119,4 +129,16 @@ height:30vh;
 }
 .cat div ul li{
   list-style: none;
+}
+
+.footer{
+  background-color: #202A44;
+  padding: 30px;
+  color: #f2ebc3;
+}
+
+.logoFooter{
+  display: flex;
+  justify-content:flex-start;
+  height: 80px;
 }
