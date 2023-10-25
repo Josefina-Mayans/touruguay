@@ -14,6 +14,14 @@
   position: sticky;
 }
 
+.eslogan{
+  color: #017999;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  margin: 0px 150px;
+}
+
 .logo img {
   height: 150px;
   position: absolute;
