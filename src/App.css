@@ -3,6 +3,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .navbar {
@@ -12,6 +13,8 @@
   align-items: center;
   padding: 30px;
   position: sticky;
+  top: 0; 
+  z-index: 100
 }
 
 .eslogan{
@@ -27,6 +30,14 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.eslogan {
+  color: white;
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0px 150px;
 }
 
 .nav-links {
@@ -47,4 +58,65 @@
 .nav-links a {
   text-decoration: none;
   color: #017999;
+}
+
+body {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.buscador {
+ background-color: #017999;
+ display: flex;
+ justify-content: flex-end;
+ padding: 10px;
+}
+
+.buscador input {
+border-radius: 50px;
+padding: 10px;
+width: 280px;
+}
+
+.displayHome{
+  height: 50vh;
+}
+
+.displayHome h2 {
+  color:#202A44;
+  text-align: center;
+  padding: 20px;
+
+}
+
+.displayHome div{
+  display: flex;
+  justify-content: space-around;
+}
+
+.displayHome img{
+height:30vh;
+}
+
+.cat{
+  background-color: #f2ebc3 ;
+  display: flex;
+  height: 20vh;
+  flex-direction: column;
+}
+.cat h2{
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.cat div{
+  display: flex;
+  justify-content: space-evenly;
+
+}
+.cat div ul li{
+  list-style: none;
 }
