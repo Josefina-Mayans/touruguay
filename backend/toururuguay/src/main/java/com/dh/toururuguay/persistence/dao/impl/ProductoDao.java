@@ -3,7 +3,7 @@ package com.dh.toururuguay.persistence.dao.impl;
 import com.dh.toururuguay.model.Producto;
 import com.dh.toururuguay.persistence.dao.IDao;
 import com.dh.toururuguay.persistence.dao.configuration.ConfigurationJDBC;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -19,7 +19,7 @@ public class ProductoDao implements IDao<Producto> {
 
     private ConfigurationJDBC coneccionBD;
 
-    final static Logger log = Logger.getLogger(ProductoDao.class);
+  //  final static Logger log = Logger.getLogger(ProductoDao.class);
 
     @Override
     public Producto guardar(Producto producto) {
@@ -33,7 +33,7 @@ public class ProductoDao implements IDao<Producto> {
             return producto;
         } else {
 
-        log.debug("Registrando nuevo producto : "+ producto.toString());
+    //    log.debug("Registrando nuevo producto : "+ producto.toString());
         Connection connection = coneccionBD.conectarConBaseDeDatos();
         Statement stmt = null;
         String query = String.format("INSERT INTO producto(nombre,descripcion,urlImagen) VALUES('%s','%s','%s')", producto.getNombre(), producto.getDescripcion(),
@@ -77,7 +77,7 @@ public class ProductoDao implements IDao<Producto> {
 
     @Override
     public List<Producto> buscarTodos() {
-        log.debug("Buscando todos los productos");
+  //      log.debug("Buscando todos los productos");
         Connection connection = coneccionBD.conectarConBaseDeDatos();
         Statement stmt = null;
         String query = "SELECT *  FROM producto";
