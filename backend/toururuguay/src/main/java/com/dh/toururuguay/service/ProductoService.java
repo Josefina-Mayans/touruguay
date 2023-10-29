@@ -35,8 +35,6 @@ public class ProductoService {
         return productoDao.buscarTodos();
     }
 
-    //creo la lista para controlar que no devuelva repetidos
-    private List<Producto> productosTemporales = new ArrayList<>();
 
     public List<Producto> buscarProductosAleatorios(Integer cantidad) {
             return productoDao.buscarProductosAleatorios(cantidad);
