@@ -6,6 +6,8 @@ import com.dh.toururuguay.persistence.dao.impl.ProductoDao;
 //import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,4 +34,11 @@ public class ProductoService {
     public List<Producto> buscarTodos() {
         return productoDao.buscarTodos();
     }
+
+    //creo la lista para controlar que no devuelva repetidos
+    private List<Producto> productosTemporales = new ArrayList<>();
+
+    public List<Producto> buscarProductosAleatorios(Integer cantidad) {
+            return productoDao.buscarProductosAleatorios(cantidad);
+        }
 }

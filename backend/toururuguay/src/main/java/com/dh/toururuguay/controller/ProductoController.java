@@ -20,9 +20,14 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.registrarProducto(producto));
     }
 
-    @GetMapping
+    @GetMapping("/todos")
     public ResponseEntity<List<Producto>> buscarTodos(){
         return ResponseEntity.ok(productoService.buscarTodos());
     }
 
+    @GetMapping("/aleatorios")
+    public ResponseEntity<List<Producto>> buscarProductosAleatorios(@RequestParam int cantidad) {
+        List<Producto> productosAleatorios = productoService.buscarProductosAleatorios(cantidad);
+        return ResponseEntity.ok(productosAleatorios);
+    }
 }

@@ -10,9 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductoDao implements IDao<Producto> {
@@ -23,6 +21,7 @@ public class ProductoDao implements IDao<Producto> {
 
     @Override
     public Producto guardar(Producto producto) {
+
 
         //llamo a buscarTodos y pregunto si el nombre ya no existe
         List<Producto> productos = new ArrayList<>();
@@ -47,11 +46,10 @@ public class ProductoDao implements IDao<Producto> {
             if (keys.next())
                 producto.setId(keys.getInt(1));
             stmt.close();
-            connection.close();
+          //  connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
         return producto;
         }
     }
@@ -83,7 +81,7 @@ public class ProductoDao implements IDao<Producto> {
         String query = "SELECT *  FROM producto";
         List<Producto> productos = new ArrayList<>();
         try {
-            stmt = connection.createStatement();
+           stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(query);
             while (result.next()) {
 
@@ -98,6 +96,35 @@ public class ProductoDao implements IDao<Producto> {
         }
 
         return productos;
+    }
+
+    @Override
+    public List<Producto> buscarProductosAleatorios(Integer cantidad) {
+        return buscarProductosAleatorios(cantidad.intValue());
+    }
+
+
+    //devolver los datos necesarios, no todo el objeto
+       public List<Producto> buscarProductosAleatorios(int cantidad) {
+           List<Producto> productos = new ArrayList<>();
+           List<Producto> productosTemporales = new ArrayList<>();
+           productos = buscarTodos();
+           return seleccionarProductosAleatorios(productos, cantidad, productosTemporales);
+       }
+    private List<Producto> seleccionarProductosAleatorios(List<Producto> todosLosProductos, int cantidad, List<Producto> productosTemporales) {
+        List<Producto> productosNuevos = new ArrayList<>();
+
+        while (productosNuevos.size() < cantidad && !todosLosProductos.isEmpty()) {
+            int indiceAleatorio = new Random().nextInt(todosLosProductos.size());
+            Producto productoAleatorio = todosLosProductos.remove(indiceAleatorio);
+
+            if (!productosTemporales.contains(productoAleatorio)) {
+                productosNuevos.add(productoAleatorio);
+                productosTemporales.add(productoAleatorio);
+            }
+       }
+
+        return productosNuevos;
     }
 
     @Override
