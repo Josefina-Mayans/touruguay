@@ -2,56 +2,29 @@ package com.dh.toururuguay.persistence.dao.impl;
 
 import com.dh.toururuguay.model.Producto;
 import com.dh.toururuguay.persistence.dao.IDao;
-import com.dh.toururuguay.persistence.dao.configuration.ConfigurationJDBC;
-//import org.apache.log4j.Logger;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+
 import java.util.*;
 
 @Repository
+@Transactional
 public class ProductoDao implements IDao<Producto> {
 
-    private ConfigurationJDBC coneccionBD;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-  //  final static Logger log = Logger.getLogger(ProductoDao.class);
+
 
     @Override
     public Producto guardar(Producto producto) {
 
-
-        //llamo a buscarTodos y pregunto si el nombre ya no existe
-        List<Producto> productos = new ArrayList<>();
-        productos = buscarTodos();
-        Producto productoEncontrado = buscarProductoPorNombre(productos, producto.getNombre());
-        if (productoEncontrado != null) {
-            System.out.println("El producto ya existe");
-            return producto;
-        } else {
-
-    //    log.debug("Registrando nuevo producto : "+ producto.toString());
-        Connection connection = coneccionBD.conectarConBaseDeDatos();
-        Statement stmt = null;
-        String query = String.format("INSERT INTO producto(nombre,descripcion,urlImagen) VALUES('%s','%s','%s')", producto.getNombre(), producto.getDescripcion(),
-                producto.getUrlImagen());
-        try {
-            stmt = connection.createStatement();
-
-            //tengo dudas sobre esta linea, tengo que traerme el ID de la base, no lo genero yo
-            stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            ResultSet keys = stmt.getGeneratedKeys();
-            if (keys.next())
-                producto.setId(keys.getInt(1));
-            stmt.close();
-          //  connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return producto;
-        }
+        return null;
     }
 
     @Override
@@ -61,7 +34,7 @@ public class ProductoDao implements IDao<Producto> {
 
     private static Producto buscarProductoPorNombre(List<Producto> lista, String nombre) {
         for (Producto producto : lista) {
-            if (producto.getNombre().equals(nombre)) {
+            if (producto.getProduct_name().equals(nombre)) {
                 return producto;
             }
         }
@@ -75,47 +48,29 @@ public class ProductoDao implements IDao<Producto> {
 
     @Override
     public List<Producto> buscarTodos() {
-  //      log.debug("Buscando todos los productos");
-        Connection connection = coneccionBD.conectarConBaseDeDatos();
-        Statement stmt = null;
-        String query = "SELECT *  FROM producto";
-        List<Producto> productos = new ArrayList<>();
-        try {
-           stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery(query);
-            while (result.next()) {
 
-                productos.add(crearObjetoProducto(result));
-
-            }
-
-            stmt.close();
-            connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return productos;
+        return entityManager.createQuery("SELECT p FROM Producto p", Producto.class).getResultList();
     }
+
 
     @Override
     public List<Producto> buscarProductosAleatorios(Integer cantidad) {
         return buscarProductosAleatorios(cantidad.intValue());
     }
 
+    private List<Producto> productosTemporales = new ArrayList<>();
+    private static final Random RANDOM_GENERATOR = new Random();
 
     //devolver los datos necesarios, no todo el objeto
-       public List<Producto> buscarProductosAleatorios(int cantidad) {
-           List<Producto> productos = new ArrayList<>();
-           List<Producto> productosTemporales = new ArrayList<>();
-           productos = buscarTodos();
-           return seleccionarProductosAleatorios(productos, cantidad, productosTemporales);
-       }
-    private List<Producto> seleccionarProductosAleatorios(List<Producto> todosLosProductos, int cantidad, List<Producto> productosTemporales) {
+    public List<Producto> buscarProductosAleatorios(int cantidad) {
+        List<Producto> productos = buscarTodos();
+        return seleccionarProductosAleatorios(productos, cantidad);
+    }
+    private List<Producto> seleccionarProductosAleatorios(List<Producto> todosLosProductos, int cantidad) {
         List<Producto> productosNuevos = new ArrayList<>();
 
         while (productosNuevos.size() < cantidad && !todosLosProductos.isEmpty()) {
-            int indiceAleatorio = new Random().nextInt(todosLosProductos.size());
+            int indiceAleatorio = RANDOM_GENERATOR.nextInt(todosLosProductos.size());
             Producto productoAleatorio = todosLosProductos.remove(indiceAleatorio);
 
             if (!productosTemporales.contains(productoAleatorio)) {
@@ -123,8 +78,17 @@ public class ProductoDao implements IDao<Producto> {
                 productosTemporales.add(productoAleatorio);
             }
        }
+        //si ya mostre todos los productos de mi base, reinicio la comparativa
+        if (todosLosProductos.size() < cantidad) {
+            // Reinicia la lista temporal si no puedo devolver la cantidad de productos nuevos
+            reiniciarProductosTemporales();
+        }
 
         return productosNuevos;
+    }
+
+    private void reiniciarProductosTemporales() {
+        productosTemporales.clear();
     }
 
     @Override
@@ -132,8 +96,4 @@ public class ProductoDao implements IDao<Producto> {
         return null;
     }
 
-    private Producto crearObjetoProducto(ResultSet resultSet) throws SQLException {
-
-        return new Producto(resultSet.getInt("id"), resultSet.getString("nombre"), resultSet.getString("descripcion"), resultSet.getString("urlImagen"));
-    }
 }
