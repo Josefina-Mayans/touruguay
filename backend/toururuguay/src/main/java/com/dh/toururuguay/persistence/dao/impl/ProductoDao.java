@@ -6,6 +6,8 @@ import com.dh.toururuguay.persistence.dao.IDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 
@@ -19,12 +21,26 @@ public class ProductoDao implements IDao<Producto> {
     @PersistenceContext
     private EntityManager entityManager;
 
-
+    private static final Logger log = LoggerFactory.getLogger(ProductoDao.class);
 
     @Override
     public Producto guardar(Producto producto) {
-
-        return null;
+        try {
+//llamo a buscarTodos y pregunto si el nombre ya existe
+        List<Producto> productos = new ArrayList<>();
+        productos = buscarTodos();
+        Producto productoEncontrado = buscarProductoPorNombre(productos, producto.getProduct_name());
+        if (productoEncontrado != null) {
+            System.out.println("El producto ya existe");
+            return null;
+        } else {
+            entityManager.persist(producto);
+            return producto;
+        }
+    } catch (Exception e) {
+            log.error("Error al guardar el producto", e);
+            return null;
+        }
     }
 
     @Override
@@ -48,10 +64,21 @@ public class ProductoDao implements IDao<Producto> {
 
     @Override
     public List<Producto> buscarTodos() {
+        try{
+//            return entityManager.createQuery("SELECT p FROM Producto p", Producto.class).getResultList();
 
-        return entityManager.createQuery("SELECT p FROM Producto p", Producto.class).getResultList();
+            return entityManager.createQuery(
+                            "SELECT p FROM Producto p " +
+                                    "LEFT JOIN FETCH p.category_id " +
+                                    "LEFT JOIN FETCH p.city_id", Producto.class)
+                    .getResultList();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
-
 
     @Override
     public List<Producto> buscarProductosAleatorios(Integer cantidad) {

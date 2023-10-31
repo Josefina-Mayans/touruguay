@@ -17,14 +17,19 @@ public class Producto {
 
     private String address;
     private Integer score;
-    private Integer category_id;
-    private Integer city_id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Categoria category_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id")
+    private Ciudad city_id;
 
 public Producto(){
 
 }
 
-    public Producto(Integer product_id, String product_name, String description, String address, Integer score, Integer category_id, Integer city_id) {
+    public Producto(Integer product_id, String product_name, String description, String address, Integer score, Categoria category_id, Ciudad city_id) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.description = description;
@@ -35,27 +40,61 @@ public Producto(){
     }
 
 
-//este lo uso para mostrar el producto completo en un listado
+    public Integer getProduct_id() {
+        return product_id;
+    }
 
-
-public Integer getId() {
-    return product_id;
-}
-// EL ID ME LO DA LA BASE DE DATOS
-    public void setId(Integer product_id) {
+    public void setProduct_id(Integer product_id) {
         this.product_id = product_id;
     }
 
-public String getProduct_name() {return product_name;}
+    public String getProduct_name() {
+        return product_name;
+    }
+
     public void setProduct_name(String product_name) {
         this.product_name = product_name;
     }
 
-    public String getDescription () {return description;}
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Categoria getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(Categoria category_id) {
+        this.category_id = category_id;
+    }
+
+    public Ciudad getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(Ciudad city_id) {
+        this.city_id = city_id;
+    }
 
     @Override
     public String toString() {
@@ -76,7 +115,7 @@ public String getProduct_name() {return product_name;}
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Producto producto = (Producto) o;
-        return Objects.equals(product_id, producto.getId()) &&
+        return Objects.equals(product_id, producto.getProduct_id()) &&
                 Objects.equals(product_name, producto.getProduct_name()) &&
                 Objects.equals(description, producto.getDescription());
     }
