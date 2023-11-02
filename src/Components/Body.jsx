@@ -1,6 +1,8 @@
 import React from "react";
+import "../index.css";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Card from "./Card";
 
 function Body() {
     return (
@@ -15,15 +17,14 @@ function Body() {
                     icon="fas fa-search"
                 ></FontAwesomeIcon>
             </section>
-            <section className="displayHome">
-                <h2> Recomendados de esta semana</h2>
-                <div>
-                    <img src="1.png" alt="Desayuno" />
-                    <img src="2.png" alt="Brunch" />
-                    <img src="3.png" alt="Gourmet" />
-                    <img src="4.png" alt="Relax" />
-                </div>
-            </section>
+            <h2> Recomendados de esta semana</h2>
+            <div className="flex flex-wrap">
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+            </div>
             <section className="cat">
                 <h2>Busca por categorías</h2>
                 <div>
@@ -41,7 +42,7 @@ function Body() {
                     </ul>
                 </div>
             </section>
-        </body>
+        </body >
     );
 }
 
