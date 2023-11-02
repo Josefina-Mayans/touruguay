@@ -80,14 +80,12 @@ public class ProductoDao implements IDao<Producto> {
         }
     }
 
-    @Override
-    public List<Producto> buscarProductosAleatorios(Integer cantidad) {
-        return buscarProductosAleatorios(cantidad.intValue());
-    }
-
     private List<Producto> productosTemporales = new ArrayList<>();
     private static final Random RANDOM_GENERATOR = new Random();
 
+    public List<Producto> buscarProductosAleatorios(Integer cantidad) {
+        return buscarProductosAleatorios(cantidad.intValue());
+    }
     //devolver los datos necesarios, no todo el objeto
     public List<Producto> buscarProductosAleatorios(int cantidad) {
         List<Producto> productos = buscarTodos();
