@@ -9,7 +9,6 @@ function Card() {
             <img src="/1.png" className="rounded-lg lg:h-32 lg:w-32 sm:h-5 sm:w-5"></img>
         </div>
     )
-
 }
 
 export default Card;
