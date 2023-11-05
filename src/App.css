@@ -3,6 +3,23 @@
   src: url('./fonts/PrimeformProDemo-Light.otf') format('truetype');
 }
 
+.content-card  {
+  align-items: center;
+  justify-content: center;
+  margin-left: 8.5em;
+  margin-top: -2.15em;
+  margin-right: 50em;
+  width: 60vh;
+}
+
+.imagen-card {
+  align-items: center;
+  justify-content: center;
+  margin-left: 8.5em;
+  width: 60vh;
+  border-radius: 5%;
+}
+
 *{
   padding: 0;
   margin: 0;
