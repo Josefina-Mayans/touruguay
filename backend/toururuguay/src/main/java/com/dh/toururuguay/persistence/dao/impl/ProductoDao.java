@@ -1,48 +1,61 @@
 package com.dh.toururuguay.persistence.dao.impl;
 
+import com.dh.toururuguay.model.Imagen;
 import com.dh.toururuguay.model.Producto;
 import com.dh.toururuguay.persistence.dao.IDao;
 
+import com.dh.toururuguay.service.ImagenService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
-
+import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 
 @Repository
-@Transactional
 public class ProductoDao implements IDao<Producto> {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     private static final Logger log = LoggerFactory.getLogger(ProductoDao.class);
+    private final ImagenService imagenService;
 
-    @Override
-    public Producto guardar(Producto producto) {
-        try {
-//llamo a buscarTodos y pregunto si el nombre ya existe
-        List<Producto> productos = new ArrayList<>();
-        productos = buscarTodos();
-        Producto productoEncontrado = buscarProductoPorNombre(productos, producto.getProduct_name());
-        if (productoEncontrado != null) {
-            System.out.println("El producto ya existe");
-            return null;
-        } else {
-            entityManager.persist(producto);
-            return producto;
-        }
-    } catch (Exception e) {
-            log.error("Error al guardar el producto", e);
-            return null;
-        }
+    @Autowired
+    public ProductoDao(ImagenService imagenService) {
+        this.imagenService = imagenService;
     }
 
+    @Transactional
+    @Override
+    public Producto guardar(Producto producto) {
+       // try {
+//llamo a buscarTodos y pregunto si el nombre ya existe
+            List<Producto> productos = new ArrayList<>();
+            productos = buscarTodos();
+            Producto productoEncontrado = buscarProductoPorNombre(productos, producto.getProduct_name());
+            if (productoEncontrado != null) {
+                System.out.println("El producto ya existe");
+                return null;
+            } else {
+
+                entityManager.persist(producto);
+                imagenService.guardarImagenesDelProducto(producto);
+                return producto;
+            }
+            /*}  catch(Exception e){
+                log.error("Error al guardar el producto", e);
+                return null;
+            }*/
+    }
     @Override
     public Optional<Producto> buscar(Integer id) {
         return Optional.empty();

@@ -1,7 +1,9 @@
 package com.dh.toururuguay.model;
 
 import jakarta.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +16,6 @@ public class Producto {
 
     private String product_name;
     private String description;
-
     private String address;
     private Integer score;
 
@@ -95,6 +96,8 @@ public Producto(){
     public void setCity_id(Ciudad city_id) {
         this.city_id = city_id;
     }
+
+
 
     @Override
     public String toString() {
